@@ -1,0 +1,20 @@
+#Introduce matplotlib.pyplot
+import matplotlib.pyplot as plt
+#Introduce the statistics
+labels='comedy','action','romance','fantacy','science-fiction','horror','crime','documentary','history','war'
+sizes=[73,42,38,28,22,19,18,12,8,7]
+#draw the picture
+plt.pie(sizes,labels=labels)
+#show the picture
+plt.show()
+#input film catagory
+category = input("Enter a film category: ")
+#make the dictionary
+film_dict = {"comedy": 73, "action": 42, "romance": 38, "fantasy": 28, "science-fiction": 22, "horror": 19, "crime": 18, "documentary": 12, "history": 8, "war": 7}
+#check if the film we input belong to the category and output the result
+if category in film_dict:
+     count = film_dict[category]
+     print(f"There are {count} films in the {category} category.")
+ else:
+     print("Invalid film category.")
+

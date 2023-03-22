@@ -1,0 +1,12 @@
+#sort the cost
+cost=[1,8,15,7,5,14,43,40]
+cost.sort()
+print(cost)
+#Introduce the matplotlib.pyplot
+import matplotlib.pyplot as plt
+#difine X and Y of the bar picture
+cost=[1,8,15,7,5,14,43,40]
+Olympic_Games=['LA 1984','SEO 1988','BAR 1992','ATL 1996','SYD 2000','ATH 2003','BJ 2008','LON 2012']
+plt.bar(x=Olympic_Games,height=cost)
+#show the picture
+plt.show()
