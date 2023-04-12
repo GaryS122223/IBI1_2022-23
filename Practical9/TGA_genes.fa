@@ -1,0 +1,27 @@
+import re
+
+number = 0
+seq = ""
+user_choice = input("give me a type of stop codons(TAA, TAG or TGA):")
+given_genes = open("C:\Users\DELL\Downloads\Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa", "r")
+save = open(f"C:\Users\DELL\Desktop\code\TGS_genes.fa", "w")
+datalines = given_genes.readlines()
+
+for line in datalines:
+    if line.startswith(">"):
+        if number > 0:
+            save.write(f"{name} {number}\n")
+            number = 0
+        name = line.lstrip(">").strip().split(" ")[0]
+        seq = ""
+    else:
+        seq += line.strip()
+        for i in range(0, len(seq) - 2, 3):
+            if seq[i:i+3] == user_choice:
+                number += 1
+
+if number > 0:
+    save.write(f"{name} {number}\n")
+
+save.close()
+given_genes.close()
