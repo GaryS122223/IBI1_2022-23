@@ -1,0 +1,12 @@
+temp = input("Please enter your salary: ")
+Please enter your salary: 10
+sal= int(temp)
+temp2=input("Please enter your house price")
+Please enter your house price 30
+hp= int(temp2)
+if hp <= 5*sal:
+ print("yes")
+else:
+ print("no")
+...
+yes

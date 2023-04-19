@@ -1,0 +1,13 @@
+def coding_percentage(seq):
+    seq = seq.upper()
+    start = seq.find('ATG')
+    stop = seq.find('TGA')
+    if start == -1 or stop == -1:
+        return 0,"unclear"
+    coding_pct = (stop-start)/len(seq)
+    if coding_pct>=0.5:
+        return coding_pct, "protein-coding"
+    if coding_pct<=0.1:
+        return coding_pct, "non-coding"
+    else:
+        return coding_pct, "unclear"
