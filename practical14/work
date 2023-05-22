@@ -1,0 +1,64 @@
+import xml.etree.ElementTree as ET
+from openpyxl import Workbook
+
+# Parse the XML file
+tree = ET.parse("C:/Users/DELL/OneDrive/桌面/progaming/go_obo.xml")
+root = tree.getroot()
+
+# Initialize the Excel workbook and worksheet
+workbook = Workbook()
+sheet = workbook.active
+sheet.title = 'GO Terms'
+
+# Set column headers
+headers = ['ID', 'Term Name', 'Definition', 'Child Nodes']
+for col_num, header in enumerate(headers, 1):
+    sheet.cell(row=1, column=col_num, value=header)
+
+# Find the gene ontology terms related to 'autophagosome' and their child nodes
+row_num = 2  # Start from row 2
+
+# Store node and its child node information
+node_family = {}
+result_all = {}
+
+# Get node information for each term
+for term in root.findall('term'):
+    node_id = term.find('id').text
+    mediate_ids = [is_a.text for is_a in term.findall('is_a')]
+    node_family[node_id] = mediate_ids
+    result_all[node_id] = 0
+
+# Calculate the count of all parent nodes for each child node
+def count_parent_nodes(node_id, parent_ids):
+    mediate_ids = node_family.get(node_id, [])
+    for mediate_id in mediate_ids:
+        parent_ids.add(mediate_id)
+        count_parent_nodes(mediate_id, parent_ids)
+
+for key in node_family.keys():
+    parent_ids = set()
+    count_parent_nodes(key, parent_ids)
+    for parent_id in parent_ids:
+        result_all[parent_id] += 1
+
+
+# Iterate over each term
+for term in root.findall('term'):
+    defstr = term.find('defstr').text
+
+    # Check if the definition string contains 'autophagosome'
+    if 'autophagosome' in defstr.lower():
+        term_id = term.find('id').text
+        term_name = term.find('name').text
+        child_count = result_all.get(term_id, 0)
+
+        # Write the information to the worksheet
+        sheet.cell(row=row_num, column=1, value=term_id)
+        sheet.cell(row=row_num, column=2, value=term_name)
+        sheet.cell(row=row_num, column=3, value=defstr)
+        sheet.cell(row=row_num, column=4, value=child_count)
+        row_num += 1
+
+# Save the workbook
+workbook.save('C:/Users/DELL/OneDrive/桌面/progaming/go_terms.xlsx')
